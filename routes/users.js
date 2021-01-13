@@ -48,7 +48,7 @@ router.post(
             res.send('saved user')
         } catch (err) {
             console.error(err.message);
-            res.status(500).send('error from send user and encrypt try')
+            res.status(500).send('error from send user and encrypt try!')
         }
         //res.send('passed');
     }
