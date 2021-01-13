@@ -1,16 +1,16 @@
 const mongoose = require('mongoose');
-const config=require('config');
-const db=config.get('mongoURI');
-
+const config = require('config');
+const db = config.get('mongoURI');
+ 
 const connectDB = () =>{
     mongoose.connect(db,{
         useNewUrlParser: true,
         useCreateIndex: true,
         useFindAndModify: false
-    }).then(()=>console.log('mongo connected'))
+    }).then(()=>console.log('Mongo DB Connected... GEORGE !!!'))
     .catch(err=>{
         console.error(err.message);
-        process.exit();
+        process.exit(1);
     })
 
 };
