@@ -5,7 +5,7 @@ export const ContactItem = ({contact}) => {
     const {id,name,email,phone,type}=contact;
 
     return (
-        <div class="card bg-light">
+        <div className="card bg-light">
             <h3 className="text-primary text-left">
                 {name}{' '} 
                 <span style={{float:'right'}}
