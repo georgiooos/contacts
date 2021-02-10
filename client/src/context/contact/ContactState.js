@@ -28,20 +28,24 @@ const ContactState = props => {
                 email:'rrrr@fdsdf.fe',
                 phone:'4432-34232-4242',
                 type:'professional'
-            }            
+            }
         ]
     };
-    const [state, dispatch]=useReducer(contactReducer,initialState); 
+    const [state, dispatch]=useReducer(contactReducer,initialState);
 
     //add contact
 
     const addContact = contact =>{
         contact.id=uuid();
-        //contact.id=1;        
+        //contact.id=1;
         dispatch({type: ADD_CONTACT, payload:contact});
     }
 
     //delete contact
+
+    const deleteContact = id =>{
+        dispatch({type: DELETE_CONTACT, payload:id});
+    }
 
     //set current contact
 
@@ -51,18 +55,18 @@ const ContactState = props => {
 
     //filter contacts
 
-    //clear filter 
+    //clear filter
 
     return (
         <ContactContext.Provider
             value={{
                 contacts:state.contacts,
-                addContact
-
+                addContact,
+                deleteContact
             }}
         >
             {props.children}
-        </ContactContext.Provider>        
+        </ContactContext.Provider>
     )
 };
 
