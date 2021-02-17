@@ -33,19 +33,19 @@ const AuthState = props => {
 
     //clear errors
 
-    return (
-        <AuthContext.Provider
-            value={{
-              token:state.token,
-              isAuhtenticated:state.isAthenticated,
-              loading:state.loading,
-              user:state.user,
-              error:state.error
-            }}
-        >
-            {props.children}
-        </AuthContext.Provider>
-    )
+  return (
+      <AuthContext.Provider
+          value={{
+            token:state.token,
+            isAuhtenticated:state.isAthenticated,
+            loading:state.loading,
+            user:state.user,
+            error:state.error
+          }}
+      >
+          {props.children}
+      </AuthContext.Provider>
+  )
 };
 
 export default AuthState;
