@@ -1,4 +1,5 @@
 import React, {useReducer} from 'react';
+import axios from 'axios';
 import AuthContext from './authContext';
 import authReducer from './authReducer';
 import {
@@ -9,42 +10,75 @@ import {
   LOGIN_SUCCESS,
   LOGIN_FAIL,
   LOGOUT,
-  CLEAR_ERROR
+  CLEAR_ERRORS
 } from '../types';
 
 const AuthState = props => {
-    const initialState = {
-      toke: localStorage.getItem('token'),
-      isAthenticated:null,
-      loading:true,
-      user:null,
-      error:null
-    };
+  const initialState = {
+    toke: localStorage.getItem('token'),
+    isAuthenticated:null,
+    loading:true,
+    user:null,
+    error:null
+  };
 
-    const [state, dispatch]=useReducer(authReducer,initialState);
+  const [state, dispatch]=useReducer(authReducer,initialState);
 
-    //load user
+  //load user
 
-    //register user
+  const loadUser=()=>console.log('loaduser')
 
-    //login user
+  //register user
 
-    //logout
+  const register = async formData =>{
+    const config = {
+      'Content-Type': 'application/json'
+    }
 
-    //clear errors
+    try {
+      const res = await axios.post('/api/users',formData,config);
+
+      dispatch({
+        type: REGISTER_SUCCESS,
+        payload: res.data
+      })
+    } catch (err) {
+      dispatch({
+        type: REGISTER_FAIL,
+        payload: err.response.data.msg
+      });
+    }
+  }
+
+  //login user
+
+  const login=()=>console.log('login')
+
+  //logout
+
+  const logout=()=>console.log('logout')
+
+  //clear errors
+
+  const clearErrors=()=>dispatch({type:CLEAR_ERRORS})
 
   return (
-      <AuthContext.Provider
-          value={{
-            token:state.token,
-            isAuhtenticated:state.isAthenticated,
-            loading:state.loading,
-            user:state.user,
-            error:state.error
-          }}
-      >
-          {props.children}
-      </AuthContext.Provider>
+    <AuthContext.Provider
+        value={{
+          token:state.token,
+          isAuthenticated:state.isAuthenticated,
+          loading:state.loading,
+          user:state.user,
+          error:state.error,
+          register,
+          loadUser,
+          login,
+          logout,
+          clearErrors
+        }}
+    >
+        {props.children}
+    </AuthContext.Provider>
   )
 };
 
