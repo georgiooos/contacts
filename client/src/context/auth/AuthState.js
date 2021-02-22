@@ -16,7 +16,7 @@ import {
 
 const AuthState = props => {
   const initialState = {
-    toke: localStorage.getItem('token'),
+    token: localStorage.getItem('token'),
     isAuthenticated:null,
     loading:true,
     user:null,
