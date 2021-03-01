@@ -1,70 +1,64 @@
-import React,{Fragment,useContext} from 'react';
+import React, { Fragment } from 'react';
 import PropTypes from 'prop-types';
-import {Link} from 'react-router-dom';
-import AuthContext from '../../context/auth/authContext';
-import ContactContext from '../../context/contact/ContactContext';
+import { Link } from 'react-router-dom';
+import { useAuth, logout } from '../../context/auth/AuthState';
+import { useContacts, clearContacts } from '../../context/contact/ContactState';
 
-const Navbar = ({title,icon}) => {
-    const authContext=useContext(AuthContext);
-    const contactContext=useContext(ContactContext);
+const Navbar = ({ title, icon }) => {
+  const [authState, authDispatch] = useAuth();
+  const { isAuthenticated, user } = authState;
 
-    const {isAuthenticated,logout,user}=authContext;
-    const {clearContacts}=contactContext;
+  // we just need the contact dispatch without state.
+  const contactDispatch = useContacts()[1];
 
-    const onLogout=()=>{
-        logout();
-        clearContacts();
-    }
+  const onLogout = () => {
+    logout(authDispatch);
+    clearContacts(contactDispatch);
+  };
 
-    const authLinks=(
-        <Fragment>
-            <li>hello {user&&user.name}</li>
-            <li>
-                <a onClick={onLogout} href="#!">
-                    <i className="fas fa-sign-out-alt"></i>
-                    <span className="hide-sm">Logout</span>
-                </a>
-            </li>
-        </Fragment>
-    );
+  const authLinks = (
+    <Fragment>
+      <li>Hello {user && user.name}</li>
+      <li>
+        <a onClick={onLogout} href='#!'>
+          <i className='fas fa-sign-out-alt' />{' '}
+          <span className='hide-sm'>Logout</span>
+        </a>
+      </li>
+    </Fragment>
+  );
 
-    const guestLinks=(
-        <Fragment>
-                <i>
-                    <Link to='/'>Home</Link>
-                </i>
-                <i>
-                    <Link to='/about'>About</Link>
-                </i>
-                <i>
-                    <Link to='/register'>Register</Link>
-                </i>
-                <i>
-                    <Link to='/login'>Login</Link>
-                </i>
-        </Fragment>
-    );
+  const guestLinks = (
+    <Fragment>
+      <li>
+        <Link to='/register'>Register</Link>
+      </li>
+      <li>
+        <Link to='/login'>Login</Link>
+      </li>
+    </Fragment>
+  );
 
-    return (
-        <div className="navbar bg-primary">
-            <h1>
-                <i className={icon}/>{title}
-            </h1>
-            <ul>
-                {isAuthenticated?authLinks:guestLinks}
-            </ul>
-        </div>
-    )
-}
+  return (
+    <div className='navbar bg-primary'>
+      <h1>
+        <Link to='/'>
+          <i className={icon} /> {title}
+        </Link>
+      </h1>
+      <ul>{isAuthenticated ? authLinks : guestLinks}</ul>
+    </div>
+  );
+};
 
 Navbar.propTypes = {
-    title: PropTypes.string.isRequired,
-    icon: PropTypes.string,
-}
+  title: PropTypes.string.isRequired,
+  icon: PropTypes.string
+};
 
 Navbar.defaultProps = {
-    title:'Contact Keeper',
-    icon: 'fas fa-id-card-alt'
-}
+  title: 'Contact Keeper',
+  icon: 'fas fa-id-card-alt'
+};
 
-export default Navbar
+export default Navbar;
